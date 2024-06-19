@@ -1,20 +1,17 @@
+#include <cmath>
 class Solution {
 public:
+    double length(double perimeter, double area) {
+        //derived formula
+        double l = (perimeter - std::sqrt((perimeter * perimeter) - (24 * area))) / 12;
+        return l;
+    }
+    //compute the maximum volume V
     double maxVolume(double perimeter, double area) {
-        double a = 4; //coefficient of x^2 in the expanded quadratic equation
-        double b = -perimeter; //coefficient of x in the expanded quadratic equation
-        double c = 4 * area; //constant term in the expanded quadratic equation
-        
-        //quadratic formula to find x
-        double x = (-b + sqrt(b * b - 4 * a * c)) / (2 * a);
-        
-        //calculate y and z based on x
-        double y = (perimeter / 4) - x;
-        double z = perimeter / 2;
-        
-        //calculate the volume
-        double volume = x * y * (z - 2 * x);
-        
+        //for optimal length l directly
+        double l = (perimeter - std::sqrt((perimeter * perimeter) - (24 * area))) / 12;
+        //for the volume using the computed length l
+        double volume = ((perimeter * l * l) - (8 * l * l * l)) / 4;
         return volume;
     }
 };
