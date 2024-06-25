@@ -1,24 +1,36 @@
 class Solution {
 public:
-    vector<vector<int>>rotateMatrix(int k,vector<vector<int>>& mat) {
+    //func
+    vector<vector<int>> rotateMatrix(int k, vector<vector<int>> mat) {
         int n = mat.size();
         int m = mat[0].size();
-        
-        //handle case where k is larger than the width of the matrix
+        //taking modulo of k with m to handle cases where k exceeds m
         k %= m;
-        
-        for (int i = 0; i < n; ++i) {
-            //create a copy of the current row
-            vector<int> originalRow = mat[i];
-            
-            for (int j = 0; j < m; ++j) {
-                //calculate the new index for the rotated position
-                int newCol = (j + k) % m;
-                
-                //to update the original matrix with the rotated value
-                mat[i][newCol] = originalRow[j];
+        //transpose the matrix
+        vector<vector<int>> transposed(m, vector<int>(n));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                transposed[j][i] = mat[i][j];
             }
         }
-        return mat;
+        //reverse each column for the specified number of rows
+        for (int col = 0; col < m; col++) {
+            vector<int> temp(n);
+            for (int row = 0; row < n; row++) {
+                temp[(row + k) % n] = transposed[col][row];
+            }
+            for (int row = 0; row < n; row++) {
+                transposed[col][row] = temp[row];
+            }
+        }
+        //to transpose back to the original row-column layout
+        vector<vector<int>> result(n, vector<int>(m));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result[j][i] = transposed[i][j];
+            }
+        }
+
+        return result;
     }
 };
