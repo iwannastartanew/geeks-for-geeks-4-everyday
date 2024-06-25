@@ -1,36 +1,31 @@
 class Solution {
 public:
-    //func
-    vector<vector<int>> rotateMatrix(int k, vector<vector<int>> mat) {
-        int n = mat.size();
-        int m = mat[0].size();
-        //taking modulo of k with m to handle cases where k exceeds m
-        k %= m;
-        //transpose the matrix
-        vector<vector<int>> transposed(m, vector<int>(n));
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                transposed[j][i] = mat[i][j];
-            }
-        }
-        //reverse each column for the specified number of rows
-        for (int col = 0; col < m; col++) {
-            vector<int> temp(n);
-            for (int row = 0; row < n; row++) {
-                temp[(row + k) % n] = transposed[col][row];
-            }
-            for (int row = 0; row < n; row++) {
-                transposed[col][row] = temp[row];
-            }
-        }
-        //to transpose back to the original row-column layout
-        vector<vector<int>> result(n, vector<int>(m));
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                result[j][i] = transposed[i][j];
-            }
-        }
+    std::vector<std::vector<int>> rotateMatrix(int k, std::vector<std::vector<int>>& mat) {
+        int rows = mat.size();
+        if (rows == 0) return mat;
+        int cols = mat[0].size();
+        if (cols == 0) return mat;
 
-        return result;
+        k = k % cols;
+        
+        for (int i = 0; i < rows; ++i) {
+            std::rotate(mat[i].begin(), mat[i].begin() + k, mat[i].end());
+        }
+        
+        return mat;
     }
 };
+/* PROBLEM STATEMENT:
+You are given an integer k and matrix mat. Rotate the elements of the given matrix to the left k times and return the resulting matrix.
+
+Examples:
+Input: k=1, mat=[[1,2,3],[4,5,6],[7,8,9]]
+Output:
+2 3 1
+5 6 4
+8 9 7
+Explanation: Rotate the matrix by one
+1 2 3       2 3 1
+4 5 6  =>   5 6 4
+7 8 9       8 9 7
+*/
