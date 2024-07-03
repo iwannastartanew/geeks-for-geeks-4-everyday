@@ -1,29 +1,30 @@
 class Solution {
 public:
-    Node* RemoveAllDuplicates(Node* head) {
-        //dummy node to handle edge cases gracefully
-        Node dummy;
-        dummy.next = head;
-        Node* prev = &dummy;  
+    Node* removeAllDuplicates(Node* head) {
+        if (!head) return nullptr;
 
-        while (head != nullptr) {
-            if (head->next != nullptr && head->data == head->next->data) {
-                //skip all nodes that have the same value
-                while (head->next != nullptr && head->data == head->next->data) {
-                    Node* toDel = head->next;
-                    head->next = head->next->next;
-                    delete toDel;
-                }
-                //skip the last node of this group
-                Node* toDel = head;
-                prev->next = head->next;
-                head = head->next;
-                delete toDel;
-            } else {
-                //move prev only when no deletion
-                prev = head;
-                head = head->next;
+        Node dummy(-1);
+        dummy.next = head;
+        Node* prev = &dummy;
+        Node* current = head;
+
+        while (current) {
+            bool hasDuplicate = false;
+
+            //check for duplicates
+            while (current->next && current->data == current->next->data) {
+                hasDuplicate = true;
+                current = current->next;
             }
+
+            if (hasDuplicate) {
+            //skip all duplicates
+                prev->next = current->next;
+            } else {
+            //move prev to current node
+                prev = prev->next;
+            }
+            current = current->next;
         }
         return dummy.next;
     }
