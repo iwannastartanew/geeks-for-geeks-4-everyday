@@ -1,27 +1,26 @@
-lass Solution {
+class Solution {
   public:
     // Function to find a continuous sub-array which adds up to a given number.
-    vector<int> subarraySum(vector<int> a, int n, long long s) {
-        int l=0;long long sum=0;
-        vector<int>ans; 
-        for(int i=0;i<n;i++)
-        {
-            sum=sum+a[i];
-            if(sum>s)
-            {
-                sum=sum-a[l];
-                l++;
+    vector<int> subarraySum(vector<int> arr, int n, long long sum) {
+        // Your code here
+        vector<int> temp;
+        long long int s=0,j=0,i=0;
+        for(i=0;i<n;i++){
+            s+=arr[i];
+            if(s>sum){
+                while(s>sum&&i<j){
+                    s-=arr[j];
+                    j++;
+                }
             }
-            if(sum==s)
-            {
-                ans.push_back(l+1);
-                ans.push_back(i+1);
-                return ans;
+            if(s==sum){
+                temp.push_back(j+1);
+                temp.push_back(i+1);
+                return temp;
             }
         }
-        ans.push_back(-1);
-        return ans;
         
-        
+        temp.push_back(-1);
+        return temp;
     }
 };
